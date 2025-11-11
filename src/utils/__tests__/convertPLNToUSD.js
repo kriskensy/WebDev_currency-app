@@ -14,4 +14,22 @@ describe('ConvertPLNToUSD', () => {
     expect(convertPLNToUSD('/')).toBeNaN();
     expect(convertPLNToUSD('h')).toBeNaN();
   });
+
+  it('should return NaN when input is empty', () => {
+    expect(convertPLNToUSD()).toBeNaN();
+  });
+
+  it('should return "Error" when input is diffrent than number or string', () => {
+    expect(convertPLNToUSD({})).toBe('Error');
+    expect(convertPLNToUSD([])).toBe('Error');
+    expect(convertPLNToUSD(null)).toBe('Error');
+    expect(convertPLNToUSD(function(){})).toBe('Error');
+  });
+
+  it('should return zero when input is lower than zero', () => {
+    expect(convertPLNToUSD(-1)).toBe('$0.00');
+    expect(convertPLNToUSD(-2)).toBe('$0.00');
+    expect(convertPLNToUSD(-20)).toBe('$0.00');
+    expect(convertPLNToUSD(-12)).toBe('$0.00');
+  });
 });
