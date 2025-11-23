@@ -18,7 +18,24 @@ describe('Component ResultBox', () => {
       {amount: 200, from: 'PLN', to: 'USD', expected: 'PLN 200.00 = $57.14'},
     ];
 
-    for(const test of testCases){
+    for(const test of testCases) {
+      render(<ResultBox from={test.from} to={test.to} amount={test.amount}/>);
+
+      const conversionOutput = screen.getByTestId('conversionOutput');
+      expect(conversionOutput).toHaveTextContent(test.expected);
+      cleanup();
+    }
+  });
+  it('should render proper info about conversion USD -> PLN', () => {
+
+    const testCases = [
+      {amount: 100, from: 'USD', to: 'PLN', expected: '$100.00 = PLN 350.00'},
+      {amount: 200, from: 'USD', to: 'PLN', expected: '$200.00 = PLN 700.00'},
+      {amount: 5, from: 'USD', to: 'PLN', expected: '$5.00 = PLN 17.50'},
+      {amount: 63, from: 'USD', to: 'PLN', expected: '$63.00 = PLN 220.50'},
+    ]
+
+    for(const test of testCases) {
       render(<ResultBox from={test.from} to={test.to} amount={test.amount}/>);
 
       const conversionOutput = screen.getByTestId('conversionOutput');
