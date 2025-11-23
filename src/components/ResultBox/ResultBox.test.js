@@ -43,4 +43,40 @@ describe('Component ResultBox', () => {
       cleanup();
     }
   });
+  it('should render proper info about the same value from and to', () => {
+
+    const testCases = [
+      {amount: 100, from: 'USD', to: 'USD', expected: '$100.00 = $100.00'},
+      {amount: 45, from: 'USD', to: 'USD', expected: '$45.00 = $45.00'},
+      {amount: 7, from: 'USD', to: 'USD', expected: '$7.00 = $7.00'},
+      {amount: 100, from: 'PLN', to: 'PLN', expected: 'PLN 100.00 = PLN 100.00'},
+      {amount: 67, from: 'PLN', to: 'PLN', expected: 'PLN 67.00 = PLN 67.00'},
+      {amount: 34, from: 'PLN', to: 'PLN', expected: 'PLN 34.00 = PLN 34.00'},
+    ]
+
+    for(const test of testCases) {
+      render(<ResultBox from={test.from} to={test.to} amount={test.amount}/>);
+
+      const conversionOutput = screen.getByTestId('conversionOutput');
+      expect(conversionOutput).toHaveTextContent(test.expected);
+      cleanup();
+    }
+  });
+  it('should render Error message "Wrong value..." after negative input', () => {
+
+    const testCases = [
+      {amount: -100, from: 'USD', to: 'USD', expected: 'Wrong value...'},
+      {amount: -4, from: 'USD', to: 'USD', expected: 'Wrong value...'},
+      {amount: -77, from: 'USD', to: 'PLN', expected: 'Wrong value...'},
+      {amount: -9, from: 'PLN', to: 'USD', expected: 'Wrong value...'},
+    ]
+
+    for(const test of testCases) {
+      render(<ResultBox from={test.from} to={test.to} amount={test.amount}/>);
+
+      const conversionOutput = screen.getByTestId('conversionOutput');
+      expect(conversionOutput).toHaveTextContent(test.expected);
+      cleanup();
+    }
+  });
 });
